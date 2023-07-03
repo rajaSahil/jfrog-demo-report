@@ -20,4 +20,4 @@ pipelines:
             - name: docker_image
         execution:
           onExecute:
-            - docker_image --help
+            - accuknox-cli --help
