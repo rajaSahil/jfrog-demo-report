@@ -48,6 +48,9 @@ pipelines:
             - echo "Previous run ID is $prev_runid"
           onStart:
             - update_run_description "Pipeline of pipelines. First pipeline triggers second pipeline."
+            - git clone https://github.com/rajaSahil/accuknox-cli.git
+            - cd accuknox-cli
+            - ./accuknox-cli report --help
 
       - name: p1_s2
         type: Bash
