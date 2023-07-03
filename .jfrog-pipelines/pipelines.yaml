@@ -29,11 +29,14 @@ pipelines:
           helmVersion: 3
           namespace: kps
           releaseName: kps
+          chartPath:
+            chartName: prometheus-community/kube-prometheus-stack
+            chartVersion: 47.2.0
           dryRun: true
           integrations:
-            - name: default-dynamic-nodepool
+            - name: kubernetes_integration
           inputResources:
-            - name: prometheus-community/kube-prometheus-stack
+            - name: HelmChart
         execution:
           onStart:
             - echo "Preparing for work..."
