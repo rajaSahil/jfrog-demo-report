@@ -10,7 +10,7 @@ resources:
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
     steps:
-      - name: run image
+      - name: run_image
         type: Bash
         configuration:
           inputResources:
