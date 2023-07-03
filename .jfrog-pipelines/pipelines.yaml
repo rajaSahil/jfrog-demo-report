@@ -1,42 +1,23 @@
-template: true   # required for local templates
-valuesFilePath: ./values.yaml
-
 resources:
-  - name: myGitRepo
-    type: GitRepo
+  - name: docker_image
+    type: Image
     configuration:
-      # SCM integration where the repository is located
-      gitProvider: {{ .Values.myRepo.gitProvider }} # this will be replaced from values.yml
-      # Repository path, including org name/repo name
-      path: {{ .Values.myRepo.path }} # this will be replaced from values.yml
-      branches:
-        # Specifies which branches will trigger dependent steps
-        include: main
-
-  - name: thisPropertyBag
-    type: PropertyBag
-    configuration:
-      commitSha: 1
-      runID: 1
-
-  - name: cron_trigger
-    type: CronTrigger
-    configuration:
-      interval: '0 4 * * *'
+      registry: {{ .Values.docker.dockerIntegrationName }}
+      imageName: {{ .Values.docker.imageName }}
+      imageTag: {{ .Values.docker.imageTag }}
+      autoPull: true
 
 pipelines:
-  - name: pipeline_of_pipelines_1
+  - name: {{ .Values.docker.pipelineName }}
     steps:
-      - name: build_go
-        type: GoBuild
+      - name: run image
+        type: Bash
         configuration:
           inputResources:
-            # Sets up step to be triggered when there are commit events to myFirstRepo
-            - name: myGitRepo
-            - name: cron_trigger
+            - name: docker_image
         execution:
-          onStart:
-            - update_run_description "Pipeline of pipelines. First pipeline triggers second pipeline."
-            - git clone https://github.com/rajaSahil/accuknox-cli.git
-            - cd accuknox-cli
-            - make install
+          onExecute:
+            - write-output "executing step..."
+            - if($docker_image_isTrigger -ne "true"){
+              Write-Error "Stop" -ErrorAction Stop
+              }
