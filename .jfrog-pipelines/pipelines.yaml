@@ -1,5 +1,5 @@
-template: false   # required for local templates
-valuesFilePath: ./values.yml
+template: true   # required for local templates
+valuesFilePath: ./values.yaml
 
 resources:
   - name: myGitRepo
