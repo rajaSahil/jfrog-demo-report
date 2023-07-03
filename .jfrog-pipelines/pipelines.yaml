@@ -50,7 +50,7 @@ pipelines:
             - update_run_description "Pipeline of pipelines. First pipeline triggers second pipeline."
             - git clone https://github.com/rajaSahil/accuknox-cli.git
             - cd accuknox-cli
-            - ./accuknox-cli report --help
+            - make install
 
       - name: p1_s2
         type: Bash
