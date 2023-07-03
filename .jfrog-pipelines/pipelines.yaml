@@ -20,7 +20,4 @@ pipelines:
             - name: docker_image
         execution:
           onExecute:
-            - write-output "executing step..."
-            - if($docker_image_isTrigger -ne "true"){
-              Write-Error "Stop" -ErrorAction Stop
-              }
+            - docker_image --help
