@@ -6,6 +6,6 @@ myRepo:
 docker:
   dockerIntegrationName: myDocker
   imageName: rajasahil/accuknox-cli
-  imageTag: report
+  imageTag: v1
   pipelineName: test_report
 

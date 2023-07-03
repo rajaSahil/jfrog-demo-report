@@ -20,4 +20,26 @@ pipelines:
             - name: docker_image
         execution:
           onExecute:
-            - docker run rajasahil/accuknox-cli:report --help
+            - docker run rajasahil/accuknox-cli:v1 install
+
+
+      - name: helmDeployStep
+        type: HelmDeploy
+        configuration:
+          helmVersion: 3
+          namespace: kps
+          releaseName: kps
+          dryRun: true
+          integrations:
+            - name: default-dynamic-nodepool
+          inputResources:
+            - name: prometheus-community/kube-prometheus-stack
+        execution:
+          onStart:
+            - echo "Preparing for work..."
+          onSuccess:
+            - echo "Job well done!"
+          onFailure:
+            - echo "uh oh, something went wrong"
+          onComplete: #always
+            - echo "Cleaning up some stuff"
