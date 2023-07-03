@@ -27,7 +27,7 @@ resources:
 pipelines:
   - name: pipeline_of_pipelines_1
     steps:
-      - name: p1_s1
+      - name: build_go
         type: GoBuild
         configuration:
           inputResources:
