@@ -10,6 +10,13 @@ resources:
       imageTag: {{ .Values.docker.imageTag }}
       autoPull: true
 
+  - name: helm_repo_kps
+    type: HelmChart
+    configuration:
+      repository: https://prometheus-community.github.io/helm-charts
+      chart: prometheus-community/kube-prometheus-stack
+      version: 47.2.0
+
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
     steps:
@@ -29,13 +36,11 @@ pipelines:
           helmVersion: 3
           namespace: kps
           releaseName: kps
-          chartName: prometheus-community/kube-prometheus-stack
-          chartVersion: 47.2.0
           dryRun: true
           integrations:
             - name: kubernetes_integration
           inputResources:
-            - name: HelmChart
+            - name: helm_repo_kps
         execution:
           onStart:
             - echo "Preparing for work..."
