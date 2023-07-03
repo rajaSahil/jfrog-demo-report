@@ -1,3 +1,6 @@
+template: true   # required for local templates
+valuesFilePath: ./values.yaml
+
 resources:
   - name: docker_image
     type: Image
