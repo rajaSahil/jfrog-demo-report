@@ -28,7 +28,7 @@ pipelines:
   - name: pipeline_of_pipelines_1
     steps:
       - name: p1_s1
-        type: Bash
+        type: GoBuild
         configuration:
           inputResources:
             # Sets up step to be triggered when there are commit events to myFirstRepo
