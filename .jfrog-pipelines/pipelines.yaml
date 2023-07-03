@@ -29,9 +29,9 @@ pipelines:
           helmVersion: 3
           namespace: kps
           releaseName: kps
-          chartPath:
-            chartName: prometheus-community/kube-prometheus-stack
-            chartVersion: 47.2.0
+          chartPath: https://prometheus-community.github.io/helm-charts
+          chartName: prometheus-community/kube-prometheus-stack
+          chartVersion: 47.2.0
           dryRun: true
           integrations:
             - name: kubernetes_integration
