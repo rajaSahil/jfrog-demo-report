@@ -10,13 +10,6 @@ resources:
       imageTag: {{ .Values.docker.imageTag }}
       autoPull: true
 
-  - name: helm_repo_kps
-    type: HelmChart
-    configuration:
-      repository: https://prometheus-community.github.io/helm-charts
-      chart: prometheus-community/kube-prometheus-stack
-      version: 47.2.0
-
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
     steps:
@@ -28,25 +21,6 @@ pipelines:
         execution:
           onExecute:
             - docker run rajasahil/accuknox-cli:v1 install
-
-
-      - name: helmDeployStep
-        type: HelmDeploy
-        configuration:
-          helmVersion: 3
-          namespace: kps
-          releaseName: kps
-          dryRun: true
-          integrations:
-            - name: kubernetes_integration
-          inputResources:
-            - name: helm_repo_kps
-        execution:
-          onStart:
-            - echo "Preparing for work..."
-          onSuccess:
-            - echo "Job well done!"
-          onFailure:
-            - echo "uh oh, something went wrong"
-          onComplete: #always
-            - echo "Cleaning up some stuff"
+            - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+            - chmod 700 get_helm.sh
+            - ./get_helm.sh
