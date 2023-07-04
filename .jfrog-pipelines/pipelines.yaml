@@ -29,6 +29,8 @@ pipelines:
             - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
             - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             - kubectl version --client
+            - kubectl get nodes
+            - kubectl get pods -A
             - docker run rajasahil/accuknox-cli:v1 install
             - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
             - chmod 700 get_helm.sh
