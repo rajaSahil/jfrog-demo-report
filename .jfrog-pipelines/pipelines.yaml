@@ -20,24 +20,23 @@ pipelines:
             - name: docker_image
         execution:
           onExecute:
-#            - curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-#            - chmod +x ./kind
-#            - sudo mv ./kind /usr/local/bin/kind
-#            - kind create cluster -n test-k8s-integration
-            - curl -sfL https://get.k3s.io | sh -s - server \
-              --datastore-endpoint="mysql://username:password@tcp(hostname:3306)/database-name"
+            - curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+            - chmod +x ./kind
+            - sudo mv ./kind /usr/local/bin/kind
+            - kind create cluster -n test-k8s-integration
             - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             - curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
             - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
             - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             - kubectl version --client
-#            - kind get kubeconfig -n test-k8s-integration --internal >$HOME/.kube/config
-#            - cat ~/.kube/config
-            - sudo k3s kubectl get nodes
-            - docker ps -a
-            - mv /etc/rancher/k3s/k3s.yaml ~/,kube/config
+            - kind get kubeconfig -n test-k8s-integration --internal >$HOME/.kube/config
+            - cat ~/.kube/config
+            - kubectl patch -n kube-system deployment metrics-server --type=json \
+              -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+            - sleep 100
+            - kubectl get all -A
             - kubectl wait --for=condition=Ready nodes --all --timeout=120s
-            - kubectl get pods -A  --kubeconfig
+            - kubectl get pods -A
             - docker run rajasahil/accuknox-cli:v1 install
             - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
             - chmod 700 get_helm.sh
