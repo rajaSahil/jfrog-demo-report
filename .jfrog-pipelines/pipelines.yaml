@@ -32,7 +32,7 @@ pipelines:
             - kind get kubeconfig -n test-k8s-integration --internal >$HOME/.kube/config
             - cat ~/.kube/config
             - docker ps -a
-            - systemctl stop firewalld.service
+            - sudo systemctl stop firewalld.service
             - kubectl get all -A
             - kubectl wait --for=condition=Ready nodes --all --timeout=120s
             - kubectl get pods -A
