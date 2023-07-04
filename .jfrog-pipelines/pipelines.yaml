@@ -29,10 +29,11 @@ pipelines:
             - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
             - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
             - kubectl version --client
+            - helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+            - helm repo update
+            - helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
             - kind get kubeconfig -n test-k8s-integration --internal >$HOME/.kube/config
             - cat ~/.kube/config
-            - kubectl patch -n kube-system deployment metrics-server --type=json \
-              -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
             - sleep 100
             - kubectl get all -A
             - kubectl wait --for=condition=Ready nodes --all --timeout=120s
