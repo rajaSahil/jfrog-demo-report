@@ -31,7 +31,8 @@ pipelines:
             - kubectl version --client
             - kind get kubeconfig -n test-k8s-integration --internal >$HOME/.kube/config
             - cat ~/.kube/config
-            - sleep 200
+            - sleep 100
+            - kubectl get all -A
             - kubectl wait --for=condition=Ready nodes --all --timeout=120s
             - kubectl get pods -A
             - docker run rajasahil/accuknox-cli:v1 install
