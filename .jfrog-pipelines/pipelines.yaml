@@ -23,10 +23,14 @@ pipelines:
           nodePool: default-dynamic-nodepool
         execution:
           onExecute:
-            - curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-linux-amd64
-            - chmod +x ./kind
-            - sudo mv ./kind /usr/local/bin/kind
-            - kind create cluster -n test-k8s-integration
+#            - curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-linux-amd64
+#            - chmod +x ./kind
+#            - sudo mv ./kind /usr/local/bin/kind
+#            - kind create cluster -n test-k8s-integration
+            - git clone https://github.com/kubearmor/KubeArmor.git
+            - cd KubeArmor/contribution/k3s
+            - chmod +x install_k3s.sh
+            - ./install_k3s.sh
             - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
             - curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
             - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
