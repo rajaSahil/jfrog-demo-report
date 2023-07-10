@@ -39,7 +39,9 @@ pipelines:
             - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
             - chmod 700 get_helm.sh
             - ./get_helm.sh
-#            - helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
-#            - helm repo update
-#            - helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
+            - helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+            - helm repo update
+            - helm upgrade --install --set args={--kubelet-insecure-tls} metrics-server metrics-server/metrics-server --namespace kube-system
+            - kubectl get all -A
+            - kubectl wait --for=condition=Ready nodes --all --timeout=120s
             - docker run rajasahil/accuknox-cli:v1 install
