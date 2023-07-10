@@ -41,4 +41,8 @@ pipelines:
             - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
             - chmod 700 get_helm.sh
             - ./get_helm.sh
-            - docker run rajasahil/accuknox-cli:v1 install
+            - git clone https://github.com/rajaSahil/accuknox-cli.git
+            - cd accuknox-cli
+            - git fetch -a
+            - git checkout feat-report
+            - ./accuknox-cli install
