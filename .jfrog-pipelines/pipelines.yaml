@@ -54,7 +54,8 @@ pipelines:
             - helm install kps prometheus-community/kube-prometheus-stack
             - kubectl create deployment nginx --image=nginx
             - POD=$(kubectl get pod -l app=nginx -o name)
-#            - sleep 200
+            - kubectl wait --for=condition=Ready pods --all --timeout=120s
+            #            - sleep 200
             - mkdir downloads
             - ./accuknox-cli  report -b "baseline/report.json" > downloads/table
             - mv /tmp/report-*.json downloads/report.json
