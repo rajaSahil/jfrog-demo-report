@@ -20,7 +20,7 @@ pipelines:
             - name: docker_image
           runtime:
             type: host
-          nodePool: default-dynamic-nodepool
+#          nodePool: default-dynamic-nodepool
         execution:
           onExecute:
 #            - curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-linux-amd64
