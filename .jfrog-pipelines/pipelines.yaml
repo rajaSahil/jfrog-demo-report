@@ -44,7 +44,7 @@ pipelines:
 #            - chmod 700 get_helm.sh
 #            - ./get_helm.sh
 #            - git clone https://github.com/rajaSahil/accuknox-cli.git
-#            - cd accuknox-cli
+            - cd accuknox-cli
 #            - git fetch -a
 #            - git checkout feat-report
 #            - ./accuknox-cli install
