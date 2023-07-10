@@ -46,3 +46,15 @@ pipelines:
             - git fetch -a
             - git checkout feat-report
             - ./accuknox-cli install
+            - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+            - helm repo update
+            - helm install kps prometheus-community/kube-prometheus-stack
+            - kubectl create deployment nginx --image=nginx
+            - POD=$(kubectl get pod -l app=nginx -o name)
+            - sleep 200
+            - mkdir downloads
+            - ./accuknox-cli  report -b "baseline/report.json" > downloads/table
+            - mv /tmp/report-*.json downloads/report.json
+            - mv /tmp/diff-report-*.json downloads/diff-report.json
+            - mv /tmp/diff-report-*.md downloads/diff-report.md
+            - cat downloads/table
