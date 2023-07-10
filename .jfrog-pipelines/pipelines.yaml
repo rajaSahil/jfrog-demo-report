@@ -28,6 +28,7 @@ pipelines:
 #            - sudo mv ./kind /usr/local/bin/kind
 #            - kind create cluster -n test-k8s-integration
             - apt update
+            - apt upgrade
             - sudo apt install socat
             - git clone https://github.com/kubearmor/KubeArmor.git
             - cd KubeArmor/contribution/k3s
