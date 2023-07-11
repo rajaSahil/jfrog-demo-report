@@ -33,6 +33,7 @@ pipelines:
 #            - kill -9 $(lsof /var/lib/dpkg/lock-frontend) | true
 #            - sudo rm /var/lib/dpkg/lock-frontend |true
             - sudo rm /var/lib/dpkg/lock-frontend || true
+            - sudo rm /var/lib/dpkg/lock || true
             - sudo rm /var/cache/apt/archives/lock || true
             -
 #            - apt install socat
