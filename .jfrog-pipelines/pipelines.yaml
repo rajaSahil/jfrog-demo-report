@@ -32,7 +32,7 @@ pipelines:
 #            - sudo killall apt apt-get | true
 #            - kill -9 $(lsof /var/lib/dpkg/lock-frontend) | true
 #            - sudo rm /var/lib/dpkg/lock-frontend |true
-#            - sudo rm /var/lib/dpkg/lock|true
+            - sudo rm /var/lib/dpkg/lock
 #            - apt install socat
             - apt-get install socat
             - git clone https://github.com/kubearmor/KubeArmor.git
