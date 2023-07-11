@@ -28,10 +28,9 @@ pipelines:
 #            - sudo mv ./kind /usr/local/bin/kind
 #            - kind create cluster -n test-k8s-integration
             - apt update
+            - sudo kill -9 $(sudo lsof /var/lib/dpkg/lock-frontend)
             - sudo rm /var/lib/dpkg/lock-frontend
             - sudo rm /var/lib/dpkg/lock
-            - sudo rm /var/lib/apt/lists/lock
-            - sudo rm /var/cache/apt/archives/lock
 #            - apt upgrade
 #            - apt install socat
             - apt install socat
