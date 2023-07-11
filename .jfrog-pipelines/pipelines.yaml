@@ -64,10 +64,10 @@ pipelines:
             - kubectl create deployment nginx --image=nginx
             - POD=$(kubectl get pod -l app=nginx -o name)
             - kubectl get all -A
-            #            - sleep 200
             - mkdir downloads
+            - touch report.json
             - sleep 200
-            - ./accuknox-cli  report -b "baseline/report.json" > downloads/table
+            - ./accuknox-cli  report -b "report.json" > downloads/table
             - mv /tmp/report-*.json downloads/report.json
             - mv /tmp/diff-report-*.json downloads/diff-report.json
             - mv /tmp/diff-report-*.md downloads/diff-report.md
