@@ -65,6 +65,7 @@ pipelines:
             - kubectl get all -A
             #            - sleep 200
             - mkdir downloads
+            - sleep 200
             - ./accuknox-cli  report -b "baseline/report.json" > downloads/table
             - mv /tmp/report-*.json downloads/report.json
             - mv /tmp/diff-report-*.json downloads/diff-report.json
