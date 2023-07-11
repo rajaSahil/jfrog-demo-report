@@ -34,6 +34,7 @@ pipelines:
 #            - sudo rm /var/lib/dpkg/lock-frontend |true
             - sudo rm /var/lib/dpkg/lock-frontend || true
             - sudo rm /var/lib/dpkg/lock || true
+            - sudo rm /var/lib/apt/lists/lock || true
             - sudo rm /var/cache/apt/archives/lock || true
 #            - apt install socat
             - sudo apt-get install socat
