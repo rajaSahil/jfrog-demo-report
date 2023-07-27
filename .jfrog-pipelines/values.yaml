@@ -1,6 +1,9 @@
 myRepo:
   gitProvider: jfrog_demo_report
   path: rajaSahil/accuknox-cli
+  mainBranch: feat-report
+  protocol: https
+  buildOnCommit: True
 
 
 docker:
@@ -9,3 +12,5 @@ docker:
   imageTag: v1
   pipelineName: test_report
 
+task:
+  name: runtime_security

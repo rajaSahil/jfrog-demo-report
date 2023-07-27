@@ -1,0 +1,55 @@
+name: runtime_security
+description: "Find vulnerabilities and runtime risks for a cluster in ci/cd pipeline"
+labels:
+  - runtime-security
+input:
+  - name: ignore-paths
+    description: "Ignore paths for process and network events"
+execution:
+  - apt-get update
+  - sudo rm /var/lib/dpkg/lock-frontend || true
+  - sudo rm /var/lib/dpkg/lock || true
+  - sudo rm /var/lib/apt/lists/lock || true
+  - sudo rm /var/cache/apt/archives/lock || true
+  - sudo apt-get install socat
+  - git clone https://github.com/kubearmor/KubeArmor.git
+  - cd KubeArmor/contribution/k3s
+  - chmod +x install_k3s.sh
+  - ./install_k3s.sh
+  - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  - curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+  - echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+  - sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  - kubectl version --client
+  - kubectl wait --for=condition=Ready nodes --all --timeout=120s
+  - kubectl get all -A
+  - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+  - chmod 700 get_helm.sh
+  - ./get_helm.sh
+  - git clone https://github.com/rajaSahil/accuknox-cli.git
+  - cd accuknox-cli
+  - git fetch -a
+  - git checkout feat-report
+  - ./accuknox-cli install
+  - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  - helm repo update
+  - helm install kps prometheus-community/kube-prometheus-stack
+  - kubectl create deployment nginx --image=nginx
+  - POD=$(kubectl get pod -l app=nginx -o name)
+  - kubectl get all -A
+  - mkdir downloads
+  - touch report.json
+  - sleep 200
+  - ./accuknox-cli  report -b "report.json" > downloads/table
+  - mv /tmp/report-*.json downloads/report.json
+  - mv /tmp/diff-report-*.json downloads/diff-report.json
+  - mv /tmp/diff-report-*.md downloads/diff-report.md
+  - cat downloads/table
+hooks:
+  onStepSuccess:
+    - echo "Push information as a comment to the PR"
+    - echo "Push report json to artifacts"
+  onStepFailure:
+    - echo "Failed"
+  onStepComplete:
+    - echo "Complete"
