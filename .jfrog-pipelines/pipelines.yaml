@@ -1,25 +1,25 @@
 template: true   # required for local templates
 valuesFilePath: ./values.yaml
 
-#resources:
-#  - name: docker_image
-#    type: Image
-#    configuration:
-#      registry: {{ .Values.docker.dockerIntegrationName }}
-#      imageName: {{ .Values.docker.imageName }}
-#      imageTag: {{ .Values.docker.imageTag }}
-#      autoPull: true
-#
-#  - name: runtime_security_task
-#    type: GitRepo
-#    configuration:
-#      path: {{ .Values.myRepo.path }}
-#      gitProvider: {{ .Values.myRepo.gitProvider }}
-#      branches:
-#        include: {{ .Values.myRepo.mainBranch }}
-#      cloneProtocol: {{ .Values.myRepo.protocol }}
-#      buildOn:
-#        commit: {{ .Values.myRepo.buildOnCommit }}
+resources:
+  - name: docker_image
+    type: Image
+    configuration:
+      registry: {{ .Values.docker.dockerIntegrationName }}
+      imageName: {{ .Values.docker.imageName }}
+      imageTag: {{ .Values.docker.imageTag }}
+      autoPull: true
+
+  - name: runtime_security_task
+    type: GitRepo
+    configuration:
+      path: {{ .Values.myRepo.path }}
+      gitProvider: {{ .Values.myRepo.gitProvider }}
+      branches:
+        include: {{ .Values.myRepo.mainBranch }}
+      cloneProtocol: {{ .Values.myRepo.protocol }}
+      buildOn:
+        commit: {{ .Values.myRepo.buildOnCommit }}
 
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
@@ -27,9 +27,9 @@ pipelines:
       - name: test_{{ .Values.task.name }}
         type: Bash
         configuration:
-#          inputResources:
-#            - name: docker_image
-#            - name: runtime_security_task
+          inputResources:
+            - name: docker_image
+            - name: runtime_security_task
           runtime:
             type: host
         execution:
