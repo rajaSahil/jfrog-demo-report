@@ -29,17 +29,13 @@ pipelines:
         configuration:
           inputResources:
             - name: docker_image
+            - name: runtime_security_task
           runtime:
             type: host
           nodePool: default-dynamic-nodepool
         execution:
-#          onStart:
-#            -
           onExecute:
             - task: $res_runtime_security_task_resourcePath
               id: runtime_sec
               input:
                 ignore-paths: "/bin"
-
-
-
