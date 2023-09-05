@@ -13,13 +13,13 @@ resources:
   - name: runtime_security_task_yaml
     type: GitRepo
     configuration:
-      path: { { .Values.myRepo.path } }
-      gitProvider: { { .Values.myRepo.gitProvider } }
+      path: {{ .Values.myRepo.path }}
+      gitProvider: {{ .Values.myRepo.gitProvider }}
       branches:
-        include: { { .Values.myRepo.mainBranch } }
-      cloneProtocol: { { .Values.myRepo.protocol } }
+        include: {{ .Values.myRepo.mainBranch }}
+      cloneProtocol: {{ .Values.myRepo.protocol }}
       buildOn:
-        commit: { { .Values.myRepo.buildOnCommit } }
+        commit: {{ .Values.myRepo.buildOnCommit }}
 
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
