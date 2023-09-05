@@ -32,6 +32,8 @@ pipelines:
             - name: runtime_security_task
           runtime:
             type: host
+          integrations:
+            - name: jfrog_demo_report
         execution:
           onExecute:
             - echo ${res_runtime_security_task_resourcePath}
