@@ -3,7 +3,7 @@ myRepo:
   path: rajaSahil/jfrog-demo-report
   mainBranch: main
   protocol: https
-  buildOnCommit: True
+  buildOnCommit: true
 
 
 docker:

@@ -41,3 +41,6 @@ pipelines:
               id: runtime_sec
               input:
                 ignore-paths: "/bin"
+          onSuccess:
+          onFailure:
+          onComplete:
