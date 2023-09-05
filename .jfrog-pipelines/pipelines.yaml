@@ -34,6 +34,7 @@ pipelines:
             type: host
         execution:
           onExecute:
+            - echo ${res_runtime_security_task_resourcePath}
             - task: $res_runtime_security_task_resourcePath
               id: runtime_sec
               input:
