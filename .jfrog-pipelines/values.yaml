@@ -1,7 +1,7 @@
 myRepo:
   gitProvider: jfrog_demo_report
-  path: rajaSahil/accuknox-cli
-  mainBranch: feat-report
+  path: rajaSahil/jfrog-demo-report
+  mainBranch: main
   protocol: https
   buildOnCommit: True
 
