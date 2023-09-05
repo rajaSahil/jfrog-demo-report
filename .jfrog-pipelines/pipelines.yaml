@@ -40,7 +40,7 @@ pipelines:
             - task: $res_runtime_security_task_yaml_resourcePath
               id: runtime_sec
               input:
-                ignore-paths: "/bin"
+                ignore_paths: "/bin"
           onSuccess:
             - echo "On success step"
           onFailure:

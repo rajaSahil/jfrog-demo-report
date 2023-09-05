@@ -3,10 +3,10 @@ description: "Find vulnerabilities and runtime risks for a cluster in ci/cd pipe
 labels:
   - runtime-security
 input:
-  - name: ignore-paths
+  - name: ignore_paths
     description: "Ignore paths for process and network events"
 execution:
-  - echo ${IN_ignore-paths}
+  - echo ${IN_ignore_paths}
   - apt-get update
   - sudo rm /var/lib/dpkg/lock-frontend || true
   - sudo rm /var/lib/dpkg/lock || true
