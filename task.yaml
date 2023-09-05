@@ -6,6 +6,7 @@ input:
   - name: ignore-paths
     description: "Ignore paths for process and network events"
 execution:
+  - echo ${IN_ignore-paths}
   - apt-get update
   - sudo rm /var/lib/dpkg/lock-frontend || true
   - sudo rm /var/lib/dpkg/lock || true
