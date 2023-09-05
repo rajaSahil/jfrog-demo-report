@@ -42,5 +42,8 @@ pipelines:
               input:
                 ignore-paths: "/bin"
           onSuccess:
+            - echo "On success step"
           onFailure:
+            - echo "On failure step"
           onComplete:
+            - echo "On complete step"
