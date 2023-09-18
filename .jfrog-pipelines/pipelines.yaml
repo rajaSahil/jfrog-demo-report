@@ -24,13 +24,13 @@ resources:
   - name: report_task_yaml
     type: GitRepo
     configuration:
-      path: { { .Values.reportTaskRepo.path } }
-      gitProvider: { { .Values.reportTaskRepo.gitProvider } }
+      path: {{ .Values.reportTaskRepo.path }}
+      gitProvider: {{ .Values.reportTaskRepo.gitProvider }}
       branches:
-        include: { { .Values.reportTaskRepo.mainBranch } }
-      cloneProtocol: { { .Values.reportTaskRepo.protocol } }
+        include: {{ .Values.reportTaskRepo.mainBranch }}
+      cloneProtocol: {{ .Values.reportTaskRepo.protocol }}
       buildOn:
-        commit: { { .Values.reportTaskRepo.buildOnCommit } }
+        commit: {{ .Values.reportTaskRepo.buildOnCommit }}
 
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
