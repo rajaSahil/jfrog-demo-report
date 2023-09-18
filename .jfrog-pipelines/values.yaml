@@ -19,6 +19,9 @@ docker:
   imageTag: v1
   pipelineName: test_report
 
+pipeline:
+  name: runtime_security
+
 task:
   installTask: install_task
   reportTask: report_task

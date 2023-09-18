@@ -33,7 +33,7 @@ resources:
         commit: {{ .Values.reportTaskRepo.buildOnCommit }}
 
 pipelines:
-  - name: {{ .Values.docker.pipelineName }}
+  - name: {{ .Values..pipeline.name }}
     steps:
       - name: create_k3s_cluster
         type: Bash
@@ -44,8 +44,6 @@ pipelines:
             - name: jfrog_demo_report
         execution:
           onExecute:
-            - echo ${res_install_task_yaml_resourcePath}
-            - echo ${res_report_task_yaml_resourcePath}
             - echo ${IN_ignore_paths}
             - apt-get update
             - sudo rm /var/lib/dpkg/lock-frontend || true
@@ -74,6 +72,7 @@ pipelines:
             - name: jfrog_demo_report
         execution:
           onExecute:
+            - echo ${res_install_task_yaml_resourcePath}
             - task: $res_install_task_yaml_resourcePath
               id: install_task
 
@@ -110,5 +109,6 @@ pipelines:
             - name: jfrog_demo_report
         execution:
           onExecute:
+            - echo ${res_report_task_yaml_resourcePath}
             - task: $res_report_task_yaml_resourcePath
               id: report_task
