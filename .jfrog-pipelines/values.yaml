@@ -20,4 +20,5 @@ docker:
   pipelineName: test_report
 
 task:
-  name: runtime_security
+  installTask: install_task
+  reportTask: report_task

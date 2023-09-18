@@ -35,13 +35,9 @@ resources:
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
     steps:
-      - name: test_{{ .Values.task.name }}
+      - name: create_k3s_cluster
         type: Bash
         configuration:
-          inputResources:
-            - name: docker_image
-            - name: install_task_yaml
-            - name: report_task_yaml
           runtime:
             type: host
           integrations:
@@ -61,19 +57,58 @@ pipelines:
             - cd KubeArmor/contribution/k3s
             - chmod +x install_k3s.sh
             - ./install_k3s.sh
+          onSuccess:
+            - echo "Successfully create k3s cluster"
+          onFailure:
+            - echo "Failed to create k3s cluster"
+
+      - name: test_{{ .Values.task.installTask }}
+        type: Bash
+        configuration:
+          inputResources:
+            - name: docker_image
+            - name: install_task_yaml
+          runtime:
+            type: host
+          integrations:
+            - name: jfrog_demo_report
+        execution:
+          onExecute:
             - task: $res_install_task_yaml_resourcePath
               id: install_task
+
+      - name: run_e2e_tests
+        type: Bash
+        configuration:
+          runtime:
+            type: host
+          integrations:
+            - name: jfrog_demo_report
+        execution:
+          onExecute:
             - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
             - chmod 700 get_helm.sh
             - ./get_helm.sh
             - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
             - helm repo update
             - helm install kps prometheus-community/kube-prometheus-stack
+          onSuccess:
+            - echo "e2e tests ran successfully"
+          onFailure:
+            - echo "e2e tests failed"
+
+
+      - name: test_{{ .Values.task.reportTask }}
+        type: Bash
+        configuration:
+          inputResources:
+            - name: docker_image
+            - name: report_task_yaml
+          runtime:
+            type: host
+          integrations:
+            - name: jfrog_demo_report
+        execution:
+          onExecute:
             - task: $res_report_task_yaml_resourcePath
               id: report_task
-          onSuccess:
-            - echo "On success step"
-          onFailure:
-            - echo "On failure step"
-          onComplete:
-            - echo "On complete step"
