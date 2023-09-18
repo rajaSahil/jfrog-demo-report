@@ -63,6 +63,8 @@ pipelines:
       - name: test_{{ .Values.task.installTask }}
         type: Bash
         configuration:
+          inputSteps:
+            - name: create_k3s_cluster
           inputResources:
             - name: docker_image
             - name: install_task_yaml
@@ -79,6 +81,9 @@ pipelines:
       - name: run_e2e_tests
         type: Bash
         configuration:
+          inputSteps:
+            - name: create_k3s_cluster
+            - name: test_{{ .Values.task.installTask }}
           runtime:
             type: host
           integrations:
@@ -100,6 +105,10 @@ pipelines:
       - name: test_{{ .Values.task.reportTask }}
         type: Bash
         configuration:
+          inputSteps:
+            - name: create_k3s_cluster
+            - name: test_{{ .Values.task.installTask }}
+            - name: run_e2e_tests
           inputResources:
             - name: docker_image
             - name: report_task_yaml
