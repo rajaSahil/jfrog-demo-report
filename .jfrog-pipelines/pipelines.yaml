@@ -10,16 +10,27 @@ resources:
       imageTag: {{ .Values.docker.imageTag }}
       autoPull: true
 
-  - name: runtime_security_task_yaml
+  - name: install_task_yaml
     type: GitRepo
     configuration:
-      path: {{ .Values.myRepo.path }}
-      gitProvider: {{ .Values.myRepo.gitProvider }}
+      path: {{ .Values.installTaskRepo.path }}
+      gitProvider: {{ .Values.installTaskRepo.gitProvider }}
       branches:
-        include: {{ .Values.myRepo.mainBranch }}
-      cloneProtocol: {{ .Values.myRepo.protocol }}
+        include: {{ .Values.installTaskRepo.mainBranch }}
+      cloneProtocol: {{ .Values.installTaskRepo.protocol }}
       buildOn:
-        commit: {{ .Values.myRepo.buildOnCommit }}
+        commit: {{ .Values.installTaskRepo.buildOnCommit }}
+
+  - name: report_task_yaml
+    type: GitRepo
+    configuration:
+      path: { { .Values.reportTaskRepo.path } }
+      gitProvider: { { .Values.reportTaskRepo.gitProvider } }
+      branches:
+        include: { { .Values.reportTaskRepo.mainBranch } }
+      cloneProtocol: { { .Values.reportTaskRepo.protocol } }
+      buildOn:
+        commit: { { .Values.reportTaskRepo.buildOnCommit } }
 
 pipelines:
   - name: {{ .Values.docker.pipelineName }}
@@ -29,18 +40,35 @@ pipelines:
         configuration:
           inputResources:
             - name: docker_image
-            - name: runtime_security_task_yaml
+            - name: install_task_yaml
+            - name: report_task_yaml
           runtime:
             type: host
           integrations:
             - name: jfrog_demo_report
         execution:
           onExecute:
-            - echo ${res_runtime_security_task_yaml_resourcePath}
-            - task: $res_runtime_security_task_yaml_resourcePath
-              id: runtime_sec
-              input:
-                ignore_paths: "/bin"
+            - echo ${res_install_task_yaml_resourcePath}
+            - echo ${res_report_task_yaml_resourcePath}
+            - echo ${IN_ignore_paths}
+            - apt-get update
+            - sudo rm /var/lib/dpkg/lock-frontend || true
+            - sudo rm /var/lib/dpkg/lock || true
+            - sudo rm /var/lib/apt/lists/lock || true
+            - sudo rm /var/cache/apt/archives/lock || true
+            - sudo apt-get install socat
+            - git clone https://github.com/kubearmor/KubeArmor.git
+            - cd KubeArmor/contribution/k3s
+            - chmod +x install_k3s.sh
+            - ./install_k3s.sh
+            - task: $res_install_task_yaml_resourcePath
+              id: install_task
+            - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+            - chmod 700 get_helm.sh
+            - ./get_helm.sh
+            - helm install kps prometheus-community/kube-prometheus-stack
+            - task: $res_report_task_yaml_resourcePath
+              id: report_task
           onSuccess:
             - echo "On success step"
           onFailure:

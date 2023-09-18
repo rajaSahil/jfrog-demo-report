@@ -1,9 +1,16 @@
-myRepo:
-  gitProvider: jfrog_demo_report
-  path: rajaSahil/jfrog-demo-report
+installTaskRepo:
+  gitProvider: install_task
+  path: rajaSahil/install-task
   mainBranch: main
   protocol: https
   buildOnCommit: true
+
+  reportTaskRepo:
+    gitProvider: report_task
+    path: rajaSahil/report-task
+    mainBranch: main
+    protocol: https
+    buildOnCommit: true
 
 
 docker:
