@@ -5,12 +5,12 @@ installTaskRepo:
   protocol: https
   buildOnCommit: true
 
-  reportTaskRepo:
-    gitProvider: report_task
-    path: rajaSahil/report-task
-    mainBranch: main
-    protocol: https
-    buildOnCommit: true
+reportTaskRepo:
+  gitProvider: report_task
+  path: rajaSahil/report-task
+  mainBranch: main
+  protocol: https
+  buildOnCommit: true
 
 
 docker:
